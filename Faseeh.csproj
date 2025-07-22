@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7A6FAA14-17E8-49A0-AFBC-FEC26BF8FCA8}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Faseeh</RootNamespace>
+    <AssemblyName>Faseeh</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Faseeh.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IDE\Core\Models\Document.cs" />
+    <Compile Include="IDE\Core\Models\EditorSettings.cs" />
+    <Compile Include="IDE\Core\Services\EditorService.cs" />
+    <Compile Include="IDE\Core\Services\FileService.cs" />
+    <Compile Include="IDE\Core\Services\ThemeService.cs" />
+    <Compile Include="IDE\Presentation\Controls\RichTextBoxEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IDE\Core\Services\CompilerService.cs" />
+    <Compile Include="IDE\Presentation\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IDE\Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Compiler\examples\hello_world.faseeh" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Compiler\CMakeLists.txt" />
+    <Content Include="Compiler\src\compiler.cpp" />
+    <Content Include="Compiler\src\compiler.h" />
+    <Content Include="Compiler\src\lexer.cpp" />
+    <Content Include="Compiler\src\lexer.h" />
+    <Content Include="Compiler\src\main.cpp" />
+    <Content Include="Compiler\src\parser.cpp" />
+    <Content Include="Compiler\src\parser.h" />
+    <Content Include="Faseeh.ico" />
+    <None Include="Docs\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Compiler\build\" />
+    <Folder Include="IDE\Faseeh.IDE\" />
+    <Folder Include="IDE\Properties\" />
+    <Folder Include="IDE\Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="IDE\Presentation\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

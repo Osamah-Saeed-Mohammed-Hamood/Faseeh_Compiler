@@ -1,0 +1,8 @@
+D:\IT\Level 4\Compilers\Enviroment\bin\Debug\Enviroment.exe.config
+D:\IT\Level 4\Compilers\Enviroment\bin\Debug\Enviroment.exe
+D:\IT\Level 4\Compilers\Enviroment\bin\Debug\Enviroment.pdb
+D:\IT\Level 4\Compilers\Enviroment\obj\Debug\Enviroment.csproj.AssemblyReference.cache
+D:\IT\Level 4\Compilers\Enviroment\obj\Debug\Enviroment.csproj.SuggestedBindingRedirects.cache
+D:\IT\Level 4\Compilers\Enviroment\obj\Debug\Enviroment.csproj.CoreCompileInputs.cache
+D:\IT\Level 4\Compilers\Enviroment\obj\Debug\Enviroment.exe
+D:\IT\Level 4\Compilers\Enviroment\obj\Debug\Enviroment.pdb
