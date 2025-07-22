@@ -15,3 +15,6 @@ D:\IT\Level 4\Compilers\Fasseh\obj\Debug\Faseeh.exe
 D:\IT\Level 4\Compilers\Fasseh\obj\Debug\Faseeh.pdb
 D:\IT\Level 4\Compilers\Fasseh\obj\Debug\Faseeh.Presentation.MainForm.resources
 D:\IT\Level 4\Compilers\Fasseh\obj\Debug\Faseeh.csproj.GenerateResource.cache
+E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Accounting_project\Faseeh_Compiler\bin\Debug\Faseeh.exe.config
+E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Accounting_project\Faseeh_Compiler\obj\Debug\Faseeh.exe
+E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Accounting_project\Faseeh_Compiler\obj\Debug\Faseeh.pdb
