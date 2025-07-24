@@ -18,3 +18,13 @@ D:\IT\Level 4\Compilers\Fasseh\obj\Debug\Faseeh.csproj.GenerateResource.cache
 E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Accounting_project\Faseeh_Compiler\bin\Debug\Faseeh.exe.config
 E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Accounting_project\Faseeh_Compiler\obj\Debug\Faseeh.exe
 E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Accounting_project\Faseeh_Compiler\obj\Debug\Faseeh.pdb
+E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Faseeh_Compiler\bin\Debug\Faseeh.exe.config
+E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Faseeh_Compiler\bin\Debug\Faseeh.exe
+E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Faseeh_Compiler\bin\Debug\Faseeh.pdb
+E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Faseeh_Compiler\obj\Debug\Faseeh.csproj.AssemblyReference.cache
+E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Faseeh_Compiler\obj\Debug\Faseeh.csproj.SuggestedBindingRedirects.cache
+E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Faseeh_Compiler\obj\Debug\Faseeh.Presentation.MainForm.resources
+E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Faseeh_Compiler\obj\Debug\Faseeh.csproj.GenerateResource.cache
+E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Faseeh_Compiler\obj\Debug\Faseeh.csproj.CoreCompileInputs.cache
+E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Faseeh_Compiler\obj\Debug\Faseeh.exe
+E:\INFORMATION TECHNOLOGY\learn programing\Projects_Github\Faseeh_Compiler\obj\Debug\Faseeh.pdb
