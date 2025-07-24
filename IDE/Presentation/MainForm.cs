@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using Faseeh.IDE.Core.Models;
 using Faseeh.IDE.Core.Services;
 using Faseeh.Presentation.Controls;
-
+using System.Diagnostics;
 namespace Faseeh.Presentation
 {
     public class MainForm : Form
@@ -18,6 +18,11 @@ namespace Faseeh.Presentation
         private ToolStrip _toolStrip;
         private StatusStrip _statusStrip;
         private EditorSettings _settings;
+
+
+
+        private RichTextBox _outputBox; // لوحة الإخراج
+        private SplitContainer _splitContainer; // لتقسيم الشاشة
 
         public MainForm(EditorSettings settings)
         {
@@ -42,11 +47,13 @@ namespace Faseeh.Presentation
             this.Height = 700;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Font = new Font("Tahoma", 9);
-           // this.Icon = Properties.Resources.AppIcon;
+            // this.Icon = Properties.Resources.AppIcon;
 
+            // إنشاء العناصر بالترتيب
             CreateMenuStrip();
             CreateToolStrip();
-            CreateTextBox();
+            CreateTextBox(); // إنشاء محرر الكود أولاً
+            CreateOutputPanel(); // ثم إنشاء لوحة الإخراج ووضع المحرر بداخلها
             CreateStatusStrip();
 
             this.KeyPreview = true;
@@ -57,56 +64,66 @@ namespace Faseeh.Presentation
         {
             _menuStrip = new MenuStrip { Dock = DockStyle.Top };
 
-            // قائمة ملف
+            // --- قائمة ملف ---
             var fileMenu = new ToolStripMenuItem("ملف");
             fileMenu.DropDownItems.AddRange(new ToolStripItem[]
             {
-                CreateMenuItem("جديد", "New", Keys.Control | Keys.N, OnNew),
-                CreateMenuItem("فتح...", "Open", Keys.Control | Keys.O, OnOpen),
-                CreateMenuItem("حفظ", "Save", Keys.Control | Keys.S, OnSave),
-                CreateMenuItem("حفظ باسم...", "SaveAs", Keys.Control | Keys.Shift | Keys.S, OnSaveAs),
-                new ToolStripSeparator(),
-                CreateMenuItem("خروج", "Exit", Keys.Alt | Keys.F4, (s, e) => Close())
+        CreateMenuItem("جديد", "New", Keys.Control | Keys.N, OnNew),
+        CreateMenuItem("فتح...", "Open", Keys.Control | Keys.O, OnOpen),
+        CreateMenuItem("حفظ", "Save", Keys.Control | Keys.S, OnSave),
+        CreateMenuItem("حفظ باسم...", "SaveAs", Keys.Control | Keys.Shift | Keys.S, OnSaveAs),
+        new ToolStripSeparator(),
+        CreateMenuItem("خروج", "Exit", Keys.Alt | Keys.F4, (s, e) => Close())
             });
 
-            // قائمة تحرير
+            // --- قائمة تحرير ---
             var editMenu = new ToolStripMenuItem("تحرير");
             editMenu.DropDownItems.AddRange(new ToolStripItem[]
             {
-                CreateMenuItem("تراجع", "Undo", Keys.Control | Keys.Z, (s, e) => _textBox.Undo()),
-                CreateMenuItem("إعادة", "Redo", Keys.Control | Keys.Y, (s, e) => _textBox.Redo()),
-                new ToolStripSeparator(),
-                CreateMenuItem("قص", "Cut", Keys.Control | Keys.X, (s, e) => _textBox.Cut()),
-                CreateMenuItem("نسخ", "Copy", Keys.Control | Keys.C, (s, e) => _textBox.Copy()),
-                CreateMenuItem("لصق", "Paste", Keys.Control | Keys.V, (s, e) => _textBox.Paste()),
-                new ToolStripSeparator(),
-                CreateMenuItem("تحديد الكل", "SelectAll", Keys.Control | Keys.A, (s, e) => _textBox.SelectAll())
+        CreateMenuItem("تراجع", "Undo", Keys.Control | Keys.Z, (s, e) => _textBox.Undo()),
+        CreateMenuItem("إعادة", "Redo", Keys.Control | Keys.Y, (s, e) => _textBox.Redo()),
+        new ToolStripSeparator(),
+        CreateMenuItem("قص", "Cut", Keys.Control | Keys.X, (s, e) => _textBox.Cut()),
+        CreateMenuItem("نسخ", "Copy", Keys.Control | Keys.C, (s, e) => _textBox.Copy()),
+        CreateMenuItem("لصق", "Paste", Keys.Control | Keys.V, (s, e) => _textBox.Paste()),
+        new ToolStripSeparator(),
+        CreateMenuItem("تحديد الكل", "SelectAll", Keys.Control | Keys.A, (s, e) => _textBox.SelectAll())
             });
 
-            // قائمة تنسيق
+            // --- قائمة تنسيق ---
             var formatMenu = new ToolStripMenuItem("تنسيق");
             formatMenu.DropDownItems.AddRange(new ToolStripItem[]
             {
-                CreateMenuItem("خط...", "Font", null, OnChangeFont),
-                CreateMenuItem("لون النص...", "TextColor", null, OnTextColor),
-                CreateMenuItem("لون الخلفية...", "BackColor", null, OnBackColor),
-                new ToolStripSeparator(),
-                CreateMenuItem("عريض", "Bold", Keys.Control | Keys.B, OnBold),
-                CreateMenuItem("مائل", "Italic", Keys.Control | Keys.I, OnItalic),
-                CreateMenuItem("تحته خط", "Underline", Keys.Control | Keys.U, OnUnderline)
+        CreateMenuItem("خط...", "Font", null, OnChangeFont),
+        CreateMenuItem("لون النص...", "TextColor", null, OnTextColor),
+        CreateMenuItem("لون الخلفية...", "BackColor", null, OnBackColor),
+        new ToolStripSeparator(),
+        CreateMenuItem("عريض", "Bold", Keys.Control | Keys.B, OnBold),
+        CreateMenuItem("مائل", "Italic", Keys.Control | Keys.I, OnItalic),
+        CreateMenuItem("تحته خط", "Underline", Keys.Control | Keys.U, OnUnderline)
             });
 
-            // قائمة عرض
+            // --- قائمة عرض ---
             var viewMenu = new ToolStripMenuItem("عرض");
             var themeMenu = new ToolStripMenuItem("السمة");
             themeMenu.DropDownItems.AddRange(new ToolStripItem[]
             {
-                CreateMenuItem("واضحة", "Light", null, (s, e) => ApplyTheme(false)),
-                CreateMenuItem("داكنة", "Dark", null, (s, e) => ApplyTheme(true))
+        CreateMenuItem("واضحة", "Light", null, (s, e) => ApplyTheme(false)),
+        CreateMenuItem("داكنة", "Dark", null, (s, e) => ApplyTheme(true))
             });
             viewMenu.DropDownItems.Add(themeMenu);
 
-            _menuStrip.Items.AddRange(new ToolStripItem[] { fileMenu, editMenu, formatMenu, viewMenu });
+            // --- قائمة تشغيل ---
+            var runMenu = new ToolStripMenuItem("تشغيل");
+            runMenu.DropDownItems.AddRange(new ToolStripItem[]
+            {
+        CreateMenuItem("تشغيل", "Run", Keys.F5, OnRun)
+            });
+
+            // ✅ السطر الصحيح: إضافة كل القوائم إلى شريط القوائم مرة واحدة
+            _menuStrip.Items.AddRange(new ToolStripItem[] { fileMenu, editMenu, formatMenu, viewMenu, runMenu });
+
+            // إضافة شريط القوائم إلى النافذة
             this.Controls.Add(_menuStrip);
         }
 
@@ -141,6 +158,9 @@ namespace Faseeh.Presentation
             AddToolButton("Italic", "مائل", OnItalic);
             AddToolButton("Underline", "تحت خط", OnUnderline);
 
+
+            _toolStrip.Items.Add(new ToolStripSeparator());
+            AddToolButton("Run", "تشغيل (F5)", OnRun); // أضف هذا الزر
             this.Controls.Add(_toolStrip);
         }
 
@@ -169,7 +189,7 @@ namespace Faseeh.Presentation
             };
             _textBox.TextChanged += TextBox_TextChanged;
             _textBox.SelectionChanged += TextBox_SelectionChanged;
-            this.Controls.Add(_textBox);
+            // this.Controls.Add(_textBox); // <-- السطر محذوف أو معطل
         }
 
         private void CreateStatusStrip()
@@ -294,6 +314,111 @@ namespace Faseeh.Presentation
             this.Name = "MainForm";
             this.ResumeLayout(false);
 
+        }
+        private void CreateOutputPanel()
+        {
+            // إنشاء الحاوية المقسمة
+            _splitContainer = new SplitContainer
+            {
+                Dock = DockStyle.Fill,
+                Orientation = Orientation.Horizontal,
+                SplitterDistance = this.Height - 250,
+                FixedPanel = FixedPanel.Panel2,
+            };
+
+            // إنشاء لوحة الإخراج
+            _outputBox = new RichTextBox
+            {
+                Dock = DockStyle.Fill,
+                ReadOnly = true,
+                Font = new Font("Consolas", 10),
+                RightToLeft = RightToLeft.No,
+            };
+
+            // ✅ الخطوة الأهم: ضع محرر الكود في الجزء العلوي من الحاوية
+            _splitContainer.Panel1.Controls.Add(_textBox);
+
+            // وضع لوحة الإخراج في الجزء السفلي
+            _splitContainer.Panel2.Controls.Add(_outputBox);
+
+            // إضافة الحاوية إلى النافذة الرئيسية
+            this.Controls.Add(_splitContainer);
+
+            // جعل الحاوية خلف القوائم العلوية
+            _splitContainer.BringToFront(); // استخدم BringToFront() لضمان تفاعلها مع القوائم بشكل صحيح
+        }
+
+        private void OnRun(object sender, EventArgs e)
+        {
+            // -------------------------------------------------------------------
+            // !! تنبيه هام !!
+            // يجب تغيير هذا المسار إلى المسار الصحيح للملف التنفيذي الخاص بمترجم "فصيح"
+            // -------------------------------------------------------------------
+            string compilerPath = @"FaseehCompiler.exe";
+
+            // 1. مسح المخرجات السابقة
+            _outputBox.Clear();
+            _outputBox.ForeColor = _settings.DarkMode ? Color.White : Color.Black;
+            _outputBox.Text = "جاري تنفيذ عملية الترجمة...\n" + new string('-', 50) + "\n";
+
+            // 2. التحقق من وجود ملف المترجم
+            if (!System.IO.File.Exists(compilerPath))
+            {
+                _outputBox.ForeColor = Color.Red;
+                _outputBox.AppendText($"خطأ فادح: لم يتم العثور على المترجم في المسار المحدد.\nالمسار: {System.IO.Path.GetFullPath(compilerPath)}\n");
+                _outputBox.AppendText("\nيرجى التأكد من وضع ملف المترجم (FaseehCompiler.exe) في نفس مجلد هذا البرنامج، أو قم بتحديث المسار في ملف MainForm.cs.");
+                return;
+            }
+
+            try
+            {
+                // 3. حفظ الكود الحالي في ملف مؤقت
+                string sourceCode = _textBox.Text;
+                string tempFile = System.IO.Path.ChangeExtension(System.IO.Path.GetTempFileName(), ".faseeh");
+                System.IO.File.WriteAllText(tempFile, sourceCode, System.Text.Encoding.UTF8);
+
+                // 4. إعداد وتشغيل عملية المترجم
+                var processInfo = new ProcessStartInfo(compilerPath, $"\"{tempFile}\"")
+                {
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true,
+                    StandardOutputEncoding = System.Text.Encoding.UTF8,
+                    StandardErrorEncoding = System.Text.Encoding.UTF8
+                };
+
+                using (var process = Process.Start(processInfo))
+                {
+                    // 5. قراءة المخرجات والأخطاء
+                    string output = process.StandardOutput.ReadToEnd();
+                    string error = process.StandardError.ReadToEnd();
+                    process.WaitForExit();
+
+                    // 6. عرض النتائج في لوحة الإخراج
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        _outputBox.ForeColor = Color.Red;
+                        _outputBox.AppendText("❌ حدث خطأ أثناء الترجمة:\n");
+                        _outputBox.AppendText(error);
+                    }
+                    else
+                    {
+                        _outputBox.ForeColor = Color.LimeGreen;
+                        _outputBox.AppendText("✅ تمت الترجمة بنجاح.\n\n");
+                        _outputBox.AppendText("📜 المخرجات:\n");
+                        _outputBox.AppendText(output);
+                    }
+                }
+
+                // 7. حذف الملف المؤقت
+                System.IO.File.Delete(tempFile);
+            }
+            catch (Exception ex)
+            {
+                _outputBox.ForeColor = Color.OrangeRed;
+                _outputBox.AppendText($"\nحدث خطأ غير متوقع في بيئة التطوير:\n{ex.Message}");
+            }
         }
     }
 }
